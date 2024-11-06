@@ -1,4 +1,5 @@
 filezilla
-putty
 transmission
 transmission-remote-gtk
+ufw
+fail2ban
