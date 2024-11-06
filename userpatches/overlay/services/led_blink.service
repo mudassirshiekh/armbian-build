@@ -1,0 +1,10 @@
+[Unit]
+Description=LED Blink Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/led_blink.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
