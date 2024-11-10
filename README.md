@@ -16,6 +16,7 @@
 - Provides a **consistent user experience** by keeping system standards across different platforms.
 
 ## Getting started
+# By Mudassir Alam
 
 ### Requirements for self hosted
 
