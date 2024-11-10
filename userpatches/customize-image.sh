@@ -26,12 +26,26 @@ BOARD=$3
 BUILD_DESKTOP=$4
 
 
+
+
+
 RED='\033[0;31m'
 NC='\033[0m'
 
-packages="make cmake gcc clang build-essential software-properties-common python3-dev python3-pip python3-venv libc6-dev golang ruby-dev bash-completion autoconf automake swig htop php php-fpm php-cgi php-curl php-mysql php-zip nodejs npm yarn python3-smbus certbot python3-certbot-nginx nginx-full aircrack-ng net-tools traceroute whois nmap fail2ban ufw curl wget git"
 
-packages_jammy="make cmake gcc clang build-essential software-properties-common python3-dev python3-pip python3-venv python2-dev libc6-dev golang ruby-dev bash-completion autoconf automake swig htop php php-fpm php-cgi php-curl php-mysql php-zip nodejs npm yarn python3-smbus certbot python3-certbot-nginx nginx-full aircrack-ng net-tools traceroute whois nmap fail2ban ufw curl wget git"
+
+
+
+
+
+
+packages="make cmake gcc clang build-essential software-properties-common python3-dev python3-pip python3-venv libc6-dev golang ruby-dev bash-completion autoconf automake swig htop php php-fpm php-cgi php-curl php-mysql php-zip nodejs npm yarn python3-smbus certbot python3-certbot-nginx nginx-full aircrack-ng net-tools traceroute whois nmap fail2ban ufw curl wget git swig"
+
+
+packages_jammy="make cmake gcc clang build-essential software-properties-common python3-dev python3-pip python3-venv python2-dev libc6-dev golang ruby-dev bash-completion autoconf automake swig htop php php-fpm php-cgi php-curl php-mysql php-zip nodejs npm yarn python3-smbus certbot python3-certbot-nginx nginx-full aircrack-ng net-tools traceroute whois nmap fail2ban ufw curl wget git swig"
+
+
+
 
 
 
@@ -55,6 +69,44 @@ install_packages_jammy() {
 
 
 
+clone_repositorys() {
+
+	mkdir -p /usr/share/libarys
+	cd /usr/share/libarys
+
+	git clone https://github.com/bpi-codehunterz-world/RPi.GPIO
+	git clone https://github.com/bpi-codehunterz-world/BPI-WiringPi2
+	git clone https://github.com/bpi-codehunterz-world/BPI-WiringPi2-Python
+
+	chmod 777 -R ../**
+
+	echo -e "INFO: Installing BPI-WiringPi2!"
+	cd BPI-WiringPi2
+	./build
+	echo -e "/usr/local/lib" >> /etc/ld.so.conf
+	sudo ldconfig
+	cd wiringPi
+  	make static
+  	sudo make install-static
+	cd ..
+	cd ..
+	echo -e "INFO: Installing RPi.GPIO!"
+    cd RPi.GPIO
+	sudo python3 setup.py install
+	sudo pip3 install . --break-system-packages
+	cd ..
+	echo -e "INFO: Installing BPI-WiringPi2-Python!"
+	cd BPI-WiringPi2-Python
+	swig -python wiringpi.i
+	sudo python3 setup.py build install
+	cd ..
+ }
+
+
+
+
+
+
 copy_overlay() {
 		echo -e "${RED}INFO > COPYING OVERLAY TO ROOTFS!${NC}"
 		mkdir -p /var/lib
@@ -74,6 +126,11 @@ copy_overlay() {
 
 
 
+
+
+
+
+
 generate() {
         apt-get update
 
@@ -88,6 +145,11 @@ generate_jammy() {
         install_packages_jammy;
 		copy_overlay;
 }
+
+
+
+
+
 
 
 
