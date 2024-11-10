@@ -40,7 +40,7 @@ install_packages() {
 
         for package in $packages
         do
-            sudo apt-get install $package
+            sudo apt-get install -y $package
         done
 }
 
@@ -49,15 +49,16 @@ install_packages_jammy() {
 
         for package in $packages_jammy
         do
-            sudo apt-get install $package
+            sudo apt-get install -y $package
         done
 }
+
+
 
 copy_overlay() {
 		echo -e "${RED}INFO > COPYING OVERLAY TO ROOTFS!${NC}"
 		mkdir -p /var/lib
 		mkdir -p /usr/local/bin
-
 
         cp -r /tmp/overlay/bananapi /var/lib/
 		cp -r /tmp/overlay/scripts/bananapi_blink_alive.sh /usr/local/bin/bananapi_blink_alive.sh
@@ -67,9 +68,10 @@ copy_overlay() {
 		sudo chmod 777 /usr/local/bin/bananapi_blink_alive.sh
 		sudo chmod +x /etc/init.d/set_led_trigger.sh
 
-
 		sudo update-rc.d set_led_trigger.sh defaults
 }
+
+
 
 
 generate() {
@@ -79,12 +81,16 @@ generate() {
 		copy_overlay;
 
 }
+
 generate_jammy() {
         apt-get update
 
         install_packages_jammy;
 		copy_overlay;
 }
+
+
+
 
 
 
